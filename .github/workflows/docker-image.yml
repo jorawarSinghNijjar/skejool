@@ -44,10 +44,7 @@ jobs:
         with:
           images: jorawarsingh/skejool
 
-      - name: Build and push Docker image
-        uses: docker/build-push-action@v5
-        with:
-          context: .
-          file: ./Dockerfile
-          push: true
-          tags: ${{ steps.meta.outputs.tags }}
+      - name: Docker compose build and push
+        run: |
+          docker-compose build --no-cache --force-rm
+          docker-compose push
