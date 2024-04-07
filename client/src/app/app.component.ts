@@ -10,7 +10,7 @@ import { RouterOutlet } from '@angular/router';
   styleUrl: './app.component.css'
 })
 export class AppComponent implements OnInit {
-  message = 'from client in dev mode';
+  message = 'from client in dev mode with workflow';
 
   constructor(private http: HttpClient) { }
 
