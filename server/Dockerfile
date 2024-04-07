@@ -2,8 +2,8 @@
 # Build
 #
 FROM gradle:7.3.3-jdk17 AS build
+COPY . /home/app
 WORKDIR /home/app
-COPY . .
 # COPY build.gradle /home/app/
 # COPY gradlew /home/app/
 RUN chmod +x ./gradlew
