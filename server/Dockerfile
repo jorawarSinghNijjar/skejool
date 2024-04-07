@@ -6,6 +6,7 @@ WORKDIR /home/app
 COPY . .
 # COPY build.gradle /home/app/
 # COPY gradlew /home/app/
+RUN chmod +x ./gradlew
 RUN ./gradlew build
 
 #
