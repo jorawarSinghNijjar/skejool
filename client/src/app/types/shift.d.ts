@@ -17,3 +17,10 @@ interface Weekly_Shift {
     endTime: string;
     position: string;
 }
+
+export interface Monthly_Day_Shift {
+    startTime: string;
+    endTime: string;
+    position: string;
+    employeeName: string;
+}

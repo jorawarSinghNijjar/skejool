@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
-import moment from 'moment';
+import { Monthly_Day, Monthly_Schedule, Weekly_Schedule } from '../types/schedule';
+import { Monthly_Day_Shift, Weekly_Shift } from '../types/shift';
 
 // const emp: Employee = {
 //   empId: 1,
@@ -177,5 +178,39 @@ export class ScheduleService {
     const allEmployeeSchedule: Weekly_Schedule[] = [emp1Schedule, emp2Schedule];
 
     return of(allEmployeeSchedule);
+  }
+
+  getMonthlySchedule(month: Monthly_Schedule): Observable<Monthly_Day[][]> {
+    // Fake data prep for monthly report
+    let emp1Schedule: Monthly_Day_Shift = {
+      startTime: '8:00',
+      endTime: '17:00',
+      position: 'developer',
+      employeeName: 'John Doe',
+    }
+
+    let emp2Schedule: Monthly_Day_Shift = {
+      startTime: '6:00',
+      endTime: '18:00',
+      position: 'mechanic',
+      employeeName: 'Tripathi',
+    }
+    // let week1Schedule: Monthly_Day[]= [];
+
+    // week1Schedule = week1Schedule.fill(daySchedule, 0,3);
+
+    // let schedule: Monthly_Day[][] = [week1Schedule];
+    // schedule = schedule.fill(week1Schedule, 0,2);
+
+    let schedule = month.calendar.map(week => {
+      return week.map(day => {
+        return {
+          ...day,
+          shifts: [emp1Schedule,emp2Schedule]
+        }
+      })
+    })
+    console.log(schedule)
+    return of(schedule);
   }
 }

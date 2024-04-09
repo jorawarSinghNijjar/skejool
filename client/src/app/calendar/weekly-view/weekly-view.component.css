@@ -1,0 +1,19 @@
+tr, td {
+    border: 1px solid #EEF1F4;
+    text-align: center;
+}
+
+th {
+    text-align: center;
+}
+
+td {
+    font-size: 12px;
+}
+
+.assigned-slot{
+    background-color: #F6F0D5;
+    border:none;
+    padding: 10px;
+    border-radius: 5px;
+}

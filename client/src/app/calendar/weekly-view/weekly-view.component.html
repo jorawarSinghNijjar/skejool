@@ -21,7 +21,7 @@
         <td>{{ schedule.empName }}</td>
         <td *ngFor="let shift of schedule.shifts">
           <span *ngIf="!shift"> Not Assigned </span>
-          <span *ngIf="shift">
+          <span *ngIf="shift" class="assigned-slot">
             {{ shift.startTime }} - {{ shift.endTime }} ({{ shift.position }})
           </span>
         </td>

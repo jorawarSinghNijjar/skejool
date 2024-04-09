@@ -1,1 +1,25 @@
-<p>daily-view works!</p>
+<p-table [value]="empSchedule" [tableStyle]="{ 'min-width': '50rem' }">
+  <ng-template pTemplate="header">
+    <tr>
+      <th style="min-width: 10rem">Employees</th>
+      <th *ngFor="let hour of displayHours" style="font-size: 12px">
+        {{ hour }}
+      </th>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="body" let-schedule>
+    <tr>
+      <td>{{ schedule.empName }}</td>
+      <td
+        *ngFor="let slot of schedule.slots"
+        [attr.colspan]="slot.duration + 1"
+        [class.assigned-slot]="slot.assigned"
+      >
+        <span *ngIf="slot.assigned"
+          >{{ slot.startTime }} - {{ slot.endTime }} ({{ slot.position }})</span
+        >
+        <span *ngIf="!slot.assigned">Not Assigned</span>
+      </td>
+    </tr>
+  </ng-template>
+</p-table>

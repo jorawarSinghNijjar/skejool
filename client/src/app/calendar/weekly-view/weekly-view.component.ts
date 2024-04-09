@@ -8,6 +8,7 @@ import { default as calendar } from 'calendar-js';
 import { ScheduleService } from '../../services/schedule-service.service';
 import { getWeekIndexFromMonth } from '../../util/calendar.util';
 import moment from 'moment';
+import { Weekly_Schedule } from '../../types/schedule';
 
 
 @Component({
