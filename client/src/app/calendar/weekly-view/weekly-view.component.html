@@ -1,0 +1,31 @@
+<div
+  class="flex justify-content-center align-content-center flex-wrap gap-3 mb-4"
+>
+  <p-button icon="pi pi-chevron-left" [text]="true"></p-button>
+  <p>{{ displayWeek[0].day }} - {{ displayWeek[6].day }} {{ displayMonth }}</p>
+  <p-button icon="pi pi-chevron-right" [text]="true"></p-button>
+</div>
+
+<div class="card">
+  <p-table [value]="empSchedule" [tableStyle]="{ 'min-width': '50rem' }">
+    <ng-template pTemplate="header">
+      <tr>
+        <th>Employees</th>
+        <th *ngFor="let day of displayWeek">
+          {{ day.weekday }}, {{ day.day }}
+        </th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-schedule>
+      <tr>
+        <td>{{ schedule.empName }}</td>
+        <td *ngFor="let shift of schedule.shifts">
+          <span *ngIf="!shift"> Not Assigned </span>
+          <span *ngIf="shift">
+            {{ shift.startTime }} - {{ shift.endTime }} ({{ shift.position }})
+          </span>
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+</div>

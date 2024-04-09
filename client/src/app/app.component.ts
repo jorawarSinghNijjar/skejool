@@ -19,9 +19,9 @@ export class AppComponent implements OnInit {
   constructor(private appService: AppService) { }
 
   ngOnInit() {
-    this.appService.getIndex().subscribe({
-      next: ({ message }) => this.message = message,
-      error: err => console.error(`Error: ${err}`)
-    })
+    // this.appService.getIndex().subscribe({
+    //   next: ({ message }) => this.message = message,
+    //   error: err => console.error(`Error: ${err}`)
+    // })
   }
 }

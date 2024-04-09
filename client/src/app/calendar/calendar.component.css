@@ -1,0 +1,22 @@
+/* .table{
+    border: 1px solid #4D6277;
+    text-align: center;
+}
+
+.table-grid{
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: repeat(auto,);
+}
+
+.table-header-row {
+    background-color: #4D6277;
+    color: white;
+    display: flex;
+    justify-content: space-between;
+}
+
+.table-header {
+    padding: 22px 33px;
+}
+ */
