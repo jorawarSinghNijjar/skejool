@@ -7,6 +7,13 @@ services:
             context: ./server
         ports:
             - "9000:80"
+        depends_on:
+            - db
+        environment:
+            - SPRING_DATASOURCE_URL=jdbc:postgresql://localhost:5432/skejool
+            - SPRING_DATASOURCE_USERNAME=ebnite
+            - SPRING_DATASOURCE_PASSWORD=password
+            - SPRING_JPA_HIBERNATE_DDL_AUTO=update
     frontend:
         image: jorawarsingh/skejool-client:1.0
         container_name: client-container
@@ -16,3 +23,9 @@ services:
             - "4200:80"
         depends_on:
             - backend
+    db:
+        image: 'postgres:13.1-alpine'
+        container_name: db
+        environment:
+            - POSTGRES_USER=ebnite
+            - POSTGRES_PASSWORD=password
