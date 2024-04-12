@@ -1,3 +1,11 @@
+<div
+  class="flex justify-content-center align-content-center flex-wrap gap-3 mb-4"
+>
+  <p-button icon="pi pi-chevron-left" [text]="true"></p-button>
+  <p>{{ displayDate.format("D MMM, YYYY")}}</p>
+  <p-button icon="pi pi-chevron-right" [text]="true"></p-button>
+</div>
+
 <p-table [value]="empSchedule" [tableStyle]="{ 'min-width': '50rem' }">
   <ng-template pTemplate="header">
     <tr>

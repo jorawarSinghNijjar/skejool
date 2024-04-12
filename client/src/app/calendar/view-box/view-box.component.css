@@ -1,0 +1,4 @@
+::ng-deep .p-tabview-nav {
+  display: flex;
+  justify-content: center;
+}

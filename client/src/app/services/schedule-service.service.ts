@@ -1,7 +1,12 @@
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
-import { Monthly_Day, Monthly_Schedule, Weekly_Schedule } from '../types/schedule';
+import {
+  Monthly_Day,
+  Monthly_Schedule,
+  Weekly_Schedule,
+} from '../types/schedule';
 import { Monthly_Day_Shift, Weekly_Shift } from '../types/shift';
+import { Daily_Schedule, Daily_Slot } from '../types/display-types';
 
 // const emp: Employee = {
 //   empId: 1,
@@ -132,6 +137,85 @@ export class ScheduleService {
   // return of([emp1Schedule]);
   // }
 
+  getDailyScheduleOfEmployee(
+    date: Date,
+    employee: Employee
+  ): Observable<Daily_Schedule> {
+    // Fake data prep
+    let slot1: Daily_Slot = {
+      assigned: false,
+      duration: 7,
+    };
+
+    let slot2: Daily_Slot = {
+      assigned: true,
+      startTime: '8:00',
+      endTime: '16:00',
+      duration: 8,
+      position: 'fabricator',
+    };
+
+    let slot3: Daily_Slot = {
+      assigned: false,
+      duration: 9,
+    };
+
+    const emp1DailySchedule: Daily_Schedule = {
+      empId: 1,
+      empName: 'Test',
+      slots: [slot1, slot2, slot3],
+    };
+
+    return of(emp1DailySchedule);
+  }
+
+  getDailyScheduleOfAllEmployees(date: Date): Observable<Daily_Schedule[]> {
+    // Fake data prep
+    let slot1: Daily_Slot = {
+      assigned: false,
+      duration: 7,
+    };
+
+    let slot2: Daily_Slot = {
+      assigned: true,
+      startTime: '8:00',
+      endTime: '16:00',
+      duration: 8,
+      position: 'fabricator',
+    };
+
+    let slot3: Daily_Slot = {
+      assigned: false,
+      duration: 9,
+    };
+
+    const emp1DailySchedule: Daily_Schedule = {
+      empId: 1,
+      empName: 'Test',
+      slots: [slot1, slot2, slot3],
+    };
+
+    const emp2DailySchedule: Daily_Schedule = {
+      empId: 2,
+      empName: 'Harman',
+      slots: [
+        {
+          assigned: false,
+          duration: 16,
+        },
+        {
+          assigned: true,
+          startTime: '16:00',
+          endTime: '24:00',
+          duration: 8,
+          position: 'mechanic',
+        },
+      ],
+    };
+
+    return of([emp1DailySchedule, emp2DailySchedule]);
+  }
+
   getEmployeeWeeklySchedule(
     weekStartDate: Date,
     employee: Employee
@@ -150,19 +234,19 @@ export class ScheduleService {
     };
 
     for (let i = 0; i < 7; i++) {
-      if(i < 5){
+      if (i < 5) {
         schedule.shifts.push(daySchedule);
-      }
-      else {
+      } else {
         schedule.shifts.push(null);
       }
-      
     }
 
     return schedule;
   }
 
-  getAllEmployeesWeeklySchedule(weekStartDate: Date): Observable<Weekly_Schedule[]> {
+  getAllEmployeesWeeklySchedule(
+    weekStartDate: Date
+  ): Observable<Weekly_Schedule[]> {
     // Fake data prep
     const emp1: Employee = {
       empId: 1,
@@ -187,30 +271,24 @@ export class ScheduleService {
       endTime: '17:00',
       position: 'developer',
       employeeName: 'John Doe',
-    }
+    };
 
     let emp2Schedule: Monthly_Day_Shift = {
       startTime: '6:00',
       endTime: '18:00',
       position: 'mechanic',
       employeeName: 'Tripathi',
-    }
-    // let week1Schedule: Monthly_Day[]= [];
+    };
 
-    // week1Schedule = week1Schedule.fill(daySchedule, 0,3);
-
-    // let schedule: Monthly_Day[][] = [week1Schedule];
-    // schedule = schedule.fill(week1Schedule, 0,2);
-
-    let schedule = month.calendar.map(week => {
-      return week.map(day => {
+    let schedule = month.calendar.map((week) => {
+      return week.map((day) => {
         return {
           ...day,
-          shifts: [emp1Schedule,emp2Schedule]
-        }
-      })
-    })
-    console.log(schedule)
+          shifts: [emp1Schedule, emp2Schedule],
+        };
+      });
+    });
+    console.log(schedule);
     return of(schedule);
   }
 }
