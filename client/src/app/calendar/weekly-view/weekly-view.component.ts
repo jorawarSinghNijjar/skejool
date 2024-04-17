@@ -58,6 +58,9 @@ export class WeeklyViewComponent {
   }
 
   populateSchedule() {
-    this.scheduleService.getAllEmployeesWeeklySchedule(this.displayWeek[0].date).subscribe(res => this.empSchedule = res);
+    this.scheduleService.getAllEmployeesWeeklySchedule(this.displayWeek[0].date).subscribe(res => {
+      console.log(res)
+      this.empSchedule = res;
+    });
   }
 }

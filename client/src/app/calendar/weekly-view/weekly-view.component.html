@@ -19,11 +19,17 @@
     <ng-template pTemplate="body" let-schedule>
       <tr>
         <td>{{ schedule.empName }}</td>
-        <td *ngFor="let shift of schedule.shifts">
-          <span *ngIf="!shift"> Not Assigned </span>
-          <span *ngIf="shift" class="assigned-slot">
-            {{ shift.startTime }} - {{ shift.endTime }} ({{ shift.position }})
-          </span>
+
+        <td *ngFor="let daySchedule of schedule.weeklySchedule">
+          @for (slot of daySchedule; track slot?.date) {
+            <span *ngIf="!slot"> Not Assigned </span>
+            <div *ngIf="slot" class="assigned-slot">
+              <span>{{ slot.startTime }} - {{ slot.endTime }}</span>
+              <span>({{ slot.position }})</span> 
+            </div>
+          } @empty {
+            
+          }
         </td>
       </tr>
     </ng-template>

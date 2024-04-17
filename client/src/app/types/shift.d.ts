@@ -10,13 +10,12 @@
 //     reccurrenceEndDate: Date;
 // }
 
+import { Weekly_Daily_Slot } from "./schedule";
 
-interface Weekly_Shift {
-    notAssigned: boolean;
-    startTime: string;
-    endTime: string;
-    position: string;
-}
+
+// interface Weekly_Shift {
+//     slots: Weekly_Daily_Slot[];
+// }
 
 export interface Monthly_Day_Shift {
     startTime: string;

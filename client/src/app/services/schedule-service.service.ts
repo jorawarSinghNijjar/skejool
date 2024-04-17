@@ -1,12 +1,16 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
+import moment from 'moment';
+import { Observable, map, of } from 'rxjs';
+import { environment } from '../../environments/environment';
+import { Daily_Schedule, Daily_Slot } from '../types/display-types';
 import {
   Monthly_Day,
   Monthly_Schedule,
+  Weekly_Daily_Slot,
   Weekly_Schedule,
 } from '../types/schedule';
-import { Monthly_Day_Shift, Weekly_Shift } from '../types/shift';
-import { Daily_Schedule, Daily_Slot } from '../types/display-types';
+import { Monthly_Day_Shift } from '../types/shift';
 
 // const emp: Employee = {
 //   empId: 1,
@@ -63,7 +67,7 @@ import { Daily_Schedule, Daily_Slot } from '../types/display-types';
   providedIn: 'root',
 })
 export class ScheduleService {
-  constructor() {}
+  constructor(private http: HttpClient) {}
 
   // getAllEmployeesSchedule(): Observable<Employee_Schedule[]> {
   //   return of([employee_sch]);
@@ -219,49 +223,48 @@ export class ScheduleService {
   getEmployeeWeeklySchedule(
     weekStartDate: Date,
     employee: Employee
-  ): Weekly_Schedule {
-    // Fake data prep
-    const daySchedule: Weekly_Shift = {
-      notAssigned: false,
-      startTime: '8:00',
-      endTime: '17:00',
-      position: 'developer',
-    };
-    // Assuming data comes from backend like this:
-    const schedule: Weekly_Schedule = {
-      empName: employee.name,
-      shifts: [],
-    };
+  ): Observable<Weekly_Schedule> {
+    const weekStartDateStr = moment(weekStartDate).format('YYYY-MM-DD');
 
-    for (let i = 0; i < 7; i++) {
-      if (i < 5) {
-        schedule.shifts.push(daySchedule);
-      } else {
-        schedule.shifts.push(null);
-      }
-    }
-
-    return schedule;
+    // Oringinal Data from backend
+    return this.http
+      .get<Weekly_Schedule>(`${environment.apiUrl}/schedule/weekly/employees/${employee.empId}`, {
+        params: {
+          weekStartDate: weekStartDateStr,
+        },
+      });
   }
 
   getAllEmployeesWeeklySchedule(
     weekStartDate: Date
   ): Observable<Weekly_Schedule[]> {
-    // Fake data prep
-    const emp1: Employee = {
-      empId: 1,
-      name: 'test',
-      email: 'test@test.com',
-      position: 'developer',
-    };
-    const emp2 = { ...emp1, empId: 2, name: 'test2' };
-    const emp1Schedule = this.getEmployeeWeeklySchedule(weekStartDate, emp1);
-    const emp2Schedule = this.getEmployeeWeeklySchedule(weekStartDate, emp2);
+    // Oringinal Data from backend
+    const weekStartDateStr = moment(weekStartDate).format('YYYY-MM-DD');
+    return this.http
+      .get<Weekly_Schedule[]>(`${environment.apiUrl}/schedule/weekly/employees`, {
+        params: {
+          weekStartDate: weekStartDateStr,
+        },
+      }).pipe(map(res => {
+        return res.map(emp => {
+          let modifiedSchedule =  emp.weeklySchedule.map((day) => {
 
-    // Assuming data comes from backend like this:
-    const allEmployeeSchedule: Weekly_Schedule[] = [emp1Schedule, emp2Schedule];
-
-    return of(allEmployeeSchedule);
+            return day.map((slot:Weekly_Daily_Slot | null) => {
+            
+              if(!slot?.startTime) {
+                return null;
+              }
+              else{
+                slot = {...slot, notAssigned: true, position: emp.empName}
+              }
+                // console.log(slot)
+              return slot;
+            })
+          })
+          emp = {...emp, weeklySchedule: modifiedSchedule}
+          return emp;
+        })
+      }));
   }
 
   getMonthlySchedule(month: Monthly_Schedule): Observable<Monthly_Day[][]> {

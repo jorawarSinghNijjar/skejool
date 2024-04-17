@@ -1,8 +1,20 @@
-import { Monthly_Day_Shift } from "./shift";
+import { Monthly_Day_Shift } from './shift';
+
+interface Weekly_Daily_Slot {
+  notAssigned?: boolean;
+  startTime: string;
+  endTime: string;
+  position?: string;
+}
 
 interface Weekly_Schedule {
+  empId?: number;
   empName: string;
-  shifts: (Weekly_Shift | null)[];
+  empEmail?: string;
+  empPosition?: string;
+  weekStartDate?: Date;
+
+  weeklySchedule: (Weekly_Daily_Slot | null)[][];
 }
 
 export interface Monthly_Day {
@@ -14,8 +26,8 @@ export interface Monthly_Day {
     day: number;
     week: number;
   };
-  shifts?: Monthly_Day_Shift[]
-};
+  shifts?: Monthly_Day_Shift[];
+}
 
 export interface Monthly_Schedule {
   year: string;
