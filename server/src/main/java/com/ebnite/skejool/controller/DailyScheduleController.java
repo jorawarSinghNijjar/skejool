@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.NoSuchElementException;
 
 @RestController
-@RequestMapping("/schedule/daily")
+@RequestMapping("/api/schedule/daily")
 public class DailyScheduleController {
     private static final Logger logger = LoggerFactory.getLogger(DailyScheduleController.class);
     @Autowired

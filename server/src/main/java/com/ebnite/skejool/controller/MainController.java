@@ -19,7 +19,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 
 @RestController
-@RequestMapping("/index")
+@RequestMapping("/api/index")
 public class MainController {
 
     @Autowired

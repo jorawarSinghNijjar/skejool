@@ -5,7 +5,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Date;
@@ -27,15 +26,15 @@ public class Shift {
     private List<Employee> employees;
 
     private LocalDate shiftWeekStartDate;
-    private DayOfWeek startDayOfShift;
-    private DayOfWeek endDayOfShift;
+    private Integer startDayOfShift;
+    private Integer endDayOfShift;
     private LocalTime startTime;
     private LocalTime endTime;
     private boolean recurring;
     private LocalDate recurrenceStartDate;
     private LocalDate recurrenceEndDate;
 
-    public Shift(LocalDate shiftWeekStartDate, DayOfWeek startDayOfShift, DayOfWeek endDayOfShift, LocalTime startTime, LocalTime endTime, boolean recurring) {
+    public Shift(LocalDate shiftWeekStartDate, Integer startDayOfShift, Integer endDayOfShift, LocalTime startTime, LocalTime endTime, boolean recurring) {
         this.shiftWeekStartDate = shiftWeekStartDate;
         this.startDayOfShift = startDayOfShift;
         this.endDayOfShift = endDayOfShift;
@@ -44,7 +43,7 @@ public class Shift {
         this.recurring = recurring;
     }
 
-    public Shift(LocalDate shiftWeekStartDate, DayOfWeek startDayOfShift, DayOfWeek endDayOfShift, LocalTime startTime, LocalTime endTime, boolean recurring, LocalDate recurrenceStartDate, LocalDate recurrenceEndDate) {
+    public Shift(LocalDate shiftWeekStartDate, Integer startDayOfShift, Integer endDayOfShift, LocalTime startTime, LocalTime endTime, boolean recurring, LocalDate recurrenceStartDate, LocalDate recurrenceEndDate) {
         this(shiftWeekStartDate, startDayOfShift, endDayOfShift, startTime, endTime, recurring);
         if (recurring) {
             this.recurrenceStartDate = recurrenceStartDate;
