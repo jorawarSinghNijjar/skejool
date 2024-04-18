@@ -102,7 +102,6 @@ public class ScheduleService {
 
                 List<List<ShiftDTO>> populatedWeeklySchedule = populateWeeklySchedule(weeklySchedule.getWeeklySchedule(), shiftStartDate, shiftEndDate, shift);
                 weeklySchedule.setWeeklySchedule(populatedWeeklySchedule);
-
             }
         }
 

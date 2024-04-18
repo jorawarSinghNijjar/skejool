@@ -1,4 +1,4 @@
-interface Week_Type {
+interface Weekly_Day {
   day: number;
   weekday: string;
   date: Date;
@@ -9,6 +9,8 @@ interface Week_Type {
   };
   isInLastWeekOfPrimaryMonth?: boolean;
   isInPrimaryMonth?: boolean;
+  monthName?: string;
+  isCommonWeekForMonths?: boolean;
 }
 
 // interface DayOfWeekDisplay {

@@ -1,73 +1,76 @@
-import { NgFor, NgIf } from '@angular/common';
-import { Component } from '@angular/core';
+import { AsyncPipe, NgFor, NgIf } from '@angular/common';
+import { Component, Input } from '@angular/core';
+import { default as calendar } from 'calendar-js';
 import { ButtonModule } from 'primeng/button';
 import { TableModule } from 'primeng/table';
-import { default as calendar } from 'calendar-js';
 
-import { ScheduleService } from '../../services/schedule-service.service';
-import { getWeekIndexFromMonth } from '../../util/calendar.util';
+import { Store } from '@ngrx/store';
 import moment from 'moment';
-import { Weekly_Schedule } from '../../types/schedule';
+import { ScheduleService } from '../../services/schedule-service.service';
+import { AppState } from '../../store/store';
 import { CalendarType } from '../../types/calendar';
+import { Weekly_Schedule } from '../../types/schedule';
+import { getWeekIndexFromMonth } from '../../util/calendar.util';
+import {
+  loadNextMonth,
+  loadNextWeek,
+  loadPreviousMonth,
+  loadPreviousWeek,
+} from '../../store/actions';
+import { Observable, Subscription } from 'rxjs';
+import {
+  selectCurrentMonth,
+  selectCurrentMonthName,
+  selectCurrentYear,
+  selectFirstWeekMonthName,
+  selectLastWeekMonthName,
+  selectWeekCalendar,
+} from '../../store/calendar-selectors';
 
 @Component({
   selector: 'app-weekly-view',
   standalone: true,
-  imports: [NgFor, NgIf, TableModule, ButtonModule],
+  imports: [NgFor, NgIf, TableModule, ButtonModule, AsyncPipe],
   templateUrl: './weekly-view.component.html',
   styleUrl: './weekly-view.component.css',
 })
 export class WeeklyViewComponent {
-  displayWeek: Week_Type[] = [];
-  displayMonth!: CalendarType;
-  empSchedule!: Weekly_Schedule[];
-  currentWeekIndex!: number;
-  currentMonth!: number;
-  currentYear!: number;
-  displayMonthName!: string;
-  lastWeekMonthName?: string | null | undefined;
-  firstWeekMonthStartName?: string | null | undefined;
+  currentMonth$: Observable<number> = this.store.select(selectCurrentMonth);
+  currentYear$: Observable<number> = this.store.select(selectCurrentYear);
+  currentMonthName$: Observable<string> = this.store.select(
+    selectCurrentMonthName
+  );
 
-  constructor(private scheduleService: ScheduleService) {}
+  weekCalendar$: Observable<Weekly_Day[]> = this.store.select(selectWeekCalendar);
+  empSchedule!: Weekly_Schedule[];
+
+  lastWeekMonthName?: Observable<string | undefined> = this.store.select(
+    selectLastWeekMonthName
+  );
+  firstWeekMonthName?: Observable<string | undefined> = this.store.select(
+    selectFirstWeekMonthName
+  );
+
+  weekCalendarSubs!: Subscription;
+
+  constructor(
+    private scheduleService: ScheduleService,
+    private store: Store<AppState>
+  ) {}
 
   ngOnInit(): void {
     this.displayCalendar();
   }
 
   displayCalendar() {
-    const today = new Date();
-    this.currentMonth = today.getMonth();
-    this.currentYear = today.getFullYear();
-
-    this.displayMonth = calendar().detailed(
-      this.currentYear,
-      this.currentMonth
-    );
-
-    this.currentWeekIndex = getWeekIndexFromMonth(
-      this.displayMonth.calendar,
-      moment()
-    );
-
-    this.setDisplayWeek(this.displayMonth, this.currentWeekIndex);
-    this.displayMonthName = moment(this.displayWeek[6].date).format('MMMM');
-  }
-
-  setDisplayWeek(month: CalendarType, weekIndexInMonth: number) {
-    this.displayWeek = month.calendar[weekIndexInMonth].map((day) => {
-      return {
-        ...day,
-        weekday: month.weekdaysAbbr[day.index.day],
-        dayOfWeek: day.index.day,
-      };
+    this.weekCalendar$.subscribe((week) => {
+      this.populateSchedule(week);
     });
-
-    this.populateSchedule();
   }
 
-  populateSchedule() {
+  populateSchedule(week: Weekly_Day[]) {
     this.scheduleService
-      .getAllEmployeesWeeklySchedule(this.displayWeek[0].date)
+      .getAllEmployeesWeeklySchedule(week[0].date)
       .subscribe((res) => {
         console.log(res);
         this.empSchedule = res;
@@ -75,78 +78,24 @@ export class WeeklyViewComponent {
   }
 
   nextWeek() {
-
-    this.currentWeekIndex += 1;
-
-    if (this.currentWeekIndex >= this.displayMonth.calendar.length) {
-      let lastDateOfPreviousMonthArr =
-        this.displayWeek[this.displayWeek.length - 1].date;
-      this.currentMonth += 1;
-
-      if (this.currentMonth >= 12) {
-        this.currentYear += 1;
-        this.currentMonth = 0;
-      }
-
-      this.displayMonth = calendar().detailed(
-        this.currentYear,
-        this.currentMonth
-      );
-      this.currentWeekIndex =
-        getWeekIndexFromMonth(
-          this.displayMonth.calendar,
-          moment(lastDateOfPreviousMonthArr)
-        ) + 1;
-    }
-
-    this.displayMonthName = moment(this.displayWeek[6].date).format('MMMM');
-    this.setDisplayWeek(this.displayMonth, this.currentWeekIndex);
-
-    if (moment(this.displayWeek[6].date).month() != this.currentMonth) {
-      this.lastWeekMonthName = moment(this.displayWeek[0].date).format('MMMM');
-      this.firstWeekMonthStartName = moment(this.displayWeek[6].date).format(
-        'MMMM'
-      );
-    } else {
-      this.lastWeekMonthName = null;
-      this.firstWeekMonthStartName = null;
-    }
+    this.store.dispatch(loadNextWeek());
   }
 
   previousWeek() {
-    this.currentWeekIndex -= 1;
+    this.store.dispatch(loadPreviousWeek());
+  }
 
-    if (this.currentWeekIndex < 0) {
-      let lastDateOfPreviousMonthArr = this.displayWeek[0].date;
-      this.currentMonth -= 1;
+  isCommonWeekForMonths(weekCalendar$: Observable<Weekly_Day[]>): boolean {
+    let res = false;
+    this.weekCalendarSubs = weekCalendar$.subscribe((week) => {
+      moment(week[0].date).month() !== moment(week[6].date).month()
+        ? (res = true)
+        : (res = false);
+    });
+    return res;
+  }
 
-      if (this.currentMonth < 0) {
-        this.currentYear -= 1;
-        this.currentMonth = 11;
-      }
-
-      this.displayMonth = calendar().detailed(
-        this.currentYear,
-        this.currentMonth
-      );
-      this.currentWeekIndex =
-        getWeekIndexFromMonth(
-          this.displayMonth.calendar,
-          moment(lastDateOfPreviousMonthArr)
-        ) - 1;
-    }
-
-    this.displayMonthName = moment(this.displayWeek[0].date).format('MMMM');
-    this.setDisplayWeek(this.displayMonth, this.currentWeekIndex);
-
-    if (moment(this.displayWeek[0].date).month() != this.currentMonth) {
-      this.lastWeekMonthName = moment(this.displayWeek[0].date).format('MMMM');
-      this.firstWeekMonthStartName = moment(this.displayWeek[6].date).format(
-        'MMMM'
-      );
-    } else {
-      this.lastWeekMonthName = null;
-      this.firstWeekMonthStartName = null;
-    }
+  ngOnDestroy(): void {
+    this.weekCalendarSubs?.unsubscribe();
   }
 }

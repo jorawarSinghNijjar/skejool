@@ -1,5 +1,5 @@
 <div class="flex flex-column justify-content-center">
-  <h3 class="text-center my-0">{{ currentYear }}</h3>
+  <h3 class="text-center my-0">{{ currentYear$ | async }}</h3>
   <div class="flex justify-content-center align-content-center flex-wrap gap-3">
     <p-button
       icon="pi pi-chevron-left"
@@ -7,11 +7,15 @@
       (click)="previousWeek()"
     ></p-button>
     <p>
-      {{ displayWeek[0].day }}
-      @if(lastWeekMonthName) {
-      {{ lastWeekMonthName }}
-      } - {{ displayWeek[6].day }}
-      {{ firstWeekMonthStartName ? firstWeekMonthStartName : displayMonthName }}
+      {{ (weekCalendar$ | async)?.[0]?.day }}
+      @if(isCommonWeekForMonths(weekCalendar$)) {
+      {{ lastWeekMonthName | async }}
+      } - {{ (weekCalendar$ | async)?.[6]?.day}}
+      {{
+        isCommonWeekForMonths(weekCalendar$)
+          ? (firstWeekMonthName | async)
+          : (lastWeekMonthName | async)
+      }}
     </p>
     <p-button
       icon="pi pi-chevron-right"
@@ -26,7 +30,7 @@
     <ng-template pTemplate="header">
       <tr>
         <th>Employees</th>
-        <th *ngFor="let day of displayWeek">
+        <th *ngFor="let day of weekCalendar$ | async">
           {{ day.weekday }}, {{ day.day }}
         </th>
       </tr>
