@@ -1,9 +1,24 @@
-<div
-  class="flex justify-content-center align-content-center flex-wrap gap-3 mb-4"
->
-  <p-button icon="pi pi-chevron-left" [text]="true"></p-button>
-  <p>{{ displayWeek[0].day }} - {{ displayWeek[6].day }} {{ displayMonth }}</p>
-  <p-button icon="pi pi-chevron-right" [text]="true"></p-button>
+<div class="flex flex-column justify-content-center">
+  <h3 class="text-center my-0">{{ currentYear }}</h3>
+  <div class="flex justify-content-center align-content-center flex-wrap gap-3">
+    <p-button
+      icon="pi pi-chevron-left"
+      [text]="true"
+      (click)="previousWeek()"
+    ></p-button>
+    <p>
+      {{ displayWeek[0].day }}
+      @if(lastWeekMonthName) {
+      {{ lastWeekMonthName }}
+      } - {{ displayWeek[6].day }}
+      {{ firstWeekMonthStartName ? firstWeekMonthStartName : displayMonthName }}
+    </p>
+    <p-button
+      icon="pi pi-chevron-right"
+      [text]="true"
+      (click)="nextWeek()"
+    ></p-button>
+  </div>
 </div>
 
 <div class="card">
@@ -22,14 +37,12 @@
 
         <td *ngFor="let daySchedule of schedule.weeklySchedule">
           @for (slot of daySchedule; track slot?.date) {
-            <span *ngIf="!slot"> Not Assigned </span>
-            <div *ngIf="slot" class="assigned-slot">
-              <span>{{ slot.startTime }} - {{ slot.endTime }}</span>
-              <span>({{ slot.position }})</span> 
-            </div>
-          } @empty {
-            
-          }
+          <span *ngIf="!slot"> Not Assigned </span>
+          <div *ngIf="slot" class="assigned-slot">
+            <span>{{ slot.startTime }} - {{ slot.endTime }}</span>
+            <span>({{ slot.position }})</span>
+          </div>
+          } @empty { }
         </td>
       </tr>
     </ng-template>

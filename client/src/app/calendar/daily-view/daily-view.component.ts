@@ -4,8 +4,8 @@ import moment, { Moment } from 'moment';
 import { ButtonModule } from 'primeng/button';
 import { TableModule } from 'primeng/table';
 import { generate24HourArray } from '../../util/calendar.util';
-import { Daily_Schedule } from '../../types/display-types';
 import { ScheduleService } from '../../services/schedule-service.service';
+import { Daily_Schedule } from '../../types/schedule';
 
 @Component({
   selector: 'app-daily-view',

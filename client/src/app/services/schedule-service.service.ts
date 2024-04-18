@@ -3,14 +3,16 @@ import { Injectable } from '@angular/core';
 import moment from 'moment';
 import { Observable, map, of } from 'rxjs';
 import { environment } from '../../environments/environment';
-import { Daily_Schedule, Daily_Slot } from '../types/display-types';
+
 import {
+  Daily_Schedule,
+  Daily_Slot,
   Monthly_Day,
+  Monthly_Day_Shift,
   Monthly_Schedule,
   Weekly_Daily_Slot,
   Weekly_Schedule,
 } from '../types/schedule';
-import { Monthly_Day_Shift } from '../types/shift';
 
 // const emp: Employee = {
 //   empId: 1,

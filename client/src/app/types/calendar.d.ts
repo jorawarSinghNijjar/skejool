@@ -31,4 +31,20 @@ declare module 'calendar-js' {
   }
 }
 
+export interface CalendarType {
+  year: string;
+  yearAbbr: string;
+  month: string;
+  monthAbbr: string;
+  weekdays: string;
+  weekdaysAbbr: string;
+  days: number;
+  firstWeekday: number;
+  lastWeekday: number;
+  calendar: CalendarItem[][];
+}
+
+
+
+
 

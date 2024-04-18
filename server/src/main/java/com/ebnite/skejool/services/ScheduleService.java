@@ -58,7 +58,7 @@ public class ScheduleService {
                 throw new NullPointerException("Shift week start date is null in the database");
             }
             LocalDate shiftStartDate = shift.getShiftWeekStartDate().plusDays(shift.getStartDayOfShift());
-            LocalDate shiftEndDate = shift.getShiftWeekStartDate().plusDays(shift.getEndDayOfShift() - shift.getStartDayOfShift() + 1);
+            LocalDate shiftEndDate = shiftStartDate.plusDays(shift.getEndDayOfShift() - shift.getStartDayOfShift());
 
             // Calculate requested week start and end date
             LocalDate requestStartDate = weekStartDate;
@@ -88,14 +88,17 @@ public class ScheduleService {
             // Calculate shift start and end date from database
 
             LocalDate shiftStartDate = weekStartDate.plusDays(shift.getStartDayOfShift());
-            LocalDate shiftEndDate = weekStartDate.plusDays(shift.getEndDayOfShift() - shift.getStartDayOfShift() + 1);
+            long daysToAdd = shift.getEndDayOfShift() - shift.getStartDayOfShift();
+            LocalDate shiftEndDate = shiftStartDate.plusDays(daysToAdd);
+
 
             if (shiftStartDate.isBefore(shift.getRecurrenceStartDate()) || shiftEndDate.isAfter(shift.getRecurrenceEndDate())) {
                 logger.info("No shifts in this week");
             } else {
                 logger.info("Shifts found in range..");
 
-                logger.info("Date range: ", shiftStartDate, " - " + shiftEndDate);
+                logger.info("Date range, Shift Start Date: {}", shiftStartDate);
+                logger.info("Shift End Date : {}", shiftEndDate);
 
                 List<List<ShiftDTO>> populatedWeeklySchedule = populateWeeklySchedule(weeklySchedule.getWeeklySchedule(), shiftStartDate, shiftEndDate, shift);
                 weeklySchedule.setWeeklySchedule(populatedWeeklySchedule);
