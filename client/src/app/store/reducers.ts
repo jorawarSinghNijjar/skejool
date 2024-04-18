@@ -25,11 +25,16 @@ export const nextMonthState = (state: Calendar_State) => {
     currentMonth = 0;
   }
 
+  let updatedMonthCalendar = getMonthCalendar(currentYear, currentMonth);
+  let lastDateOfFirstWeekOfMonth = updatedMonthCalendar.calendar[0][6].date;
+  let currentWeekIndex = getWeekIndexFromMonth( updatedMonthCalendar.calendar,moment(lastDateOfFirstWeekOfMonth))
   return {
     ...state,
-    monthCalendar: getMonthCalendar(currentYear, currentMonth),
+    monthCalendar: updatedMonthCalendar,
     currentMonth,
     currentYear,
+    weekCalendar: getWeekCalendar(updatedMonthCalendar, currentWeekIndex),
+    currentWeekIndex: currentWeekIndex,
   };
 };
 
@@ -42,11 +47,17 @@ export const previousMonthState = (state: Calendar_State) => {
     currentMonth = 11;
   }
 
+  let updatedMonthCalendar = getMonthCalendar(currentYear, currentMonth);
+  let lastDateOfFirstWeekOfMonth = updatedMonthCalendar.calendar[0][6].date;
+  let currentWeekIndex = getWeekIndexFromMonth( updatedMonthCalendar.calendar,moment(lastDateOfFirstWeekOfMonth))
+
   return {
     ...state,
-    monthCalendar: getMonthCalendar(currentYear, currentMonth),
+    monthCalendar: updatedMonthCalendar,
     currentMonth,
     currentYear,
+    weekCalendar: getWeekCalendar(updatedMonthCalendar, currentWeekIndex),
+    currentWeekIndex: currentWeekIndex,
   };
 };
 
@@ -131,18 +142,18 @@ export const previousWeekState = (state: Calendar_State) => {
 // Initial State Setup
 
 const today = new Date();
-const monthCalendar = getMonthCalendar(today.getFullYear(), today.getMonth());
-const currentWeekIndex = getWeekIndexFromMonth(
-  monthCalendar.calendar,
+const initialMonthCalendar = getMonthCalendar(today.getFullYear(), today.getMonth());
+const initialCurrentWeekIndex = getWeekIndexFromMonth(
+  initialMonthCalendar.calendar,
   moment(today)
 );
 
 export const initialState: Calendar_State = {
-  monthCalendar: monthCalendar,
+  monthCalendar: initialMonthCalendar,
   currentMonth: today.getMonth(),
   currentYear: today.getFullYear(),
-  weekCalendar: getWeekCalendar(monthCalendar, currentWeekIndex),
-  currentWeekIndex: currentWeekIndex,
+  weekCalendar: getWeekCalendar(initialMonthCalendar, initialCurrentWeekIndex),
+  currentWeekIndex: initialCurrentWeekIndex,
 };
 
 // Reducers
