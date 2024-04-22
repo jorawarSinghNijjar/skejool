@@ -2,15 +2,19 @@ package com.ebnite.skejool.controller;
 
 import com.ebnite.skejool.entity.Employee;
 import com.ebnite.skejool.entity.Shift;
+import com.ebnite.skejool.model.EmployeeDaySchedule;
+import com.ebnite.skejool.services.DailyScheduleService;
 import com.ebnite.skejool.services.EmployeeService;
 import com.ebnite.skejool.services.ShiftService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -23,11 +27,13 @@ public class DailyScheduleController {
     private EmployeeService employeeService;
     @Autowired
     private ShiftService shiftService;
+    @Autowired
+    private DailyScheduleService dailyScheduleService;
 
     // Daily Schedule Mappings
     @GetMapping("/employees/{empId}")
-    public ResponseEntity<Employee> getEmployeeSchedule(@PathVariable int empId) {
-        return new ResponseEntity<>(employeeService.getEmployee(empId), HttpStatus.OK);
+    public ResponseEntity<EmployeeDaySchedule> getEmployeeSchedule(@PathVariable Integer empId, @Param("date") LocalDate date) {
+        return new ResponseEntity<>(dailyScheduleService.getEmployeeDaySchedule(empId, date), HttpStatus.OK);
     }
 
     @GetMapping("/employees")
