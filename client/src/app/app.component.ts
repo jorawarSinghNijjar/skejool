@@ -7,21 +7,21 @@ import { RouterOutlet } from '@angular/router';
   standalone: true,
   imports: [RouterOutlet],
   templateUrl: './app.component.html',
-  styleUrl: './app.component.css'
+  styleUrl: './app.component.css',
 })
 export class AppComponent implements OnInit {
   message = 'from client';
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {}
 
   ngOnInit() {
-    this.http.get<{message: string}>('/api/').subscribe({
+    this.http.get<{ message: string }>('/api/').subscribe({
       next: (response) => {
         this.message = response.message;
       },
       error: (error) => {
         console.log(error);
-      }
+      },
     });
   }
 }
