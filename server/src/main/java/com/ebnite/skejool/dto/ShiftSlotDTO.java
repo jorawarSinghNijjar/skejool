@@ -13,7 +13,6 @@ import java.time.LocalTime;
 
 @JsonSerialize
 @ToString
-@AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
@@ -23,4 +22,17 @@ public class ShiftSlotDTO {
     private boolean assigned;
     private Integer duration;
     private String position;
+
+    public ShiftSlotDTO(LocalTime startTime, LocalTime endTime, boolean assigned, Integer duration, String position) {
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.assigned = assigned;
+        this.duration = duration;
+        this.position = position;
+    }
+
+    public ShiftSlotDTO(boolean assigned, Integer duration) {
+        this.assigned = assigned;
+        this.duration = duration;
+    }
 }

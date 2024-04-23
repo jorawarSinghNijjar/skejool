@@ -50,7 +50,7 @@ public class ScheduleService {
         logger.info("Employee retrieved: {}", emp.getSchedule().get(0).getStartTime());
         Shift shift = emp.getSchedule().get(0);
 
-
+        // TODO: Implement logic if employee has been assigned multiple shifts
 
         if (!shift.isRecurring()) {
             // Calculate shift start and end date from database
