@@ -1,0 +1,32 @@
+tr, td {
+    border: 1px solid #EEF1F4;
+    text-align: center;
+}
+
+th {
+    text-align: center;
+}
+
+td {
+    font-size: 12px;
+    min-height: 60px;
+    height: 60px;
+}
+
+td div{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+td:first-child {
+    font-size: 14px;
+}
+
+.assigned-slot{
+    background-color: #F6F0D5;
+    border:none;
+    padding: 10px;
+    border-radius: 5px;
+}

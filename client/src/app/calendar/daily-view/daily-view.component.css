@@ -1,0 +1,8 @@
+.assigned-slot{
+    background-color: #F6F0D5;
+    border:none;
+}
+
+tr, td {
+    border: 1px solid #EEF1F4;
+}

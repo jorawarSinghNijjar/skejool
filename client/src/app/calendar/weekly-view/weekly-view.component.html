@@ -1,0 +1,54 @@
+<div class="flex flex-column justify-content-center">
+  <h3 class="text-center my-0">{{ currentYear$ | async }}</h3>
+  <div class="flex justify-content-center align-content-center flex-wrap gap-3">
+    <p-button
+      icon="pi pi-chevron-left"
+      [text]="true"
+      (click)="previousWeek()"
+    ></p-button>
+    <p>
+      {{ (weekCalendar$ | async)?.[0]?.day }}
+      @if(isCommonWeekForMonths(weekCalendar$)) {
+      {{ lastWeekMonthName | async }}
+      } - {{ (weekCalendar$ | async)?.[6]?.day}}
+      {{
+        isCommonWeekForMonths(weekCalendar$)
+          ? (firstWeekMonthName | async)
+          : (lastWeekMonthName | async)
+      }}
+    </p>
+    <p-button
+      icon="pi pi-chevron-right"
+      [text]="true"
+      (click)="nextWeek()"
+    ></p-button>
+  </div>
+</div>
+
+<div class="card">
+  <p-table [value]="empSchedule" [tableStyle]="{ 'min-width': '50rem' }">
+    <ng-template pTemplate="header">
+      <tr>
+        <th>Employees</th>
+        <th *ngFor="let day of weekCalendar$ | async">
+          {{ day.weekday }}, {{ day.day }}
+        </th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-schedule>
+      <tr>
+        <td>{{ schedule.empName }}</td>
+
+        <td *ngFor="let daySchedule of schedule.weeklySchedule">
+          @for (slot of daySchedule; track slot?.date) {
+          <span *ngIf="!slot"> Not Assigned </span>
+          <div *ngIf="slot" class="assigned-slot">
+            <span>{{ slot.startTime }} - {{ slot.endTime }}</span>
+            <span>({{ slot.position }})</span>
+          </div>
+          } @empty { }
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+</div>

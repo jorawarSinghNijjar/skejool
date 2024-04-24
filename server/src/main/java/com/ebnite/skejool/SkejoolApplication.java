@@ -6,8 +6,10 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class SkejoolApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(SkejoolApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(SkejoolApplication.class, args);
+
+
+    }
 
 }

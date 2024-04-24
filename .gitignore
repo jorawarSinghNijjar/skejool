@@ -1,0 +1,55 @@
+# Angular files
+client/dist/
+client/node_modules/
+client/.angular/cache
+client/.sass-cache/
+client/connect.lock
+client/coverage
+client/libpeerconnection.log
+client/testem.log
+client/typings
+
+# Spring Boot files
+server/build/
+server/.gradle/
+!/server/.gradle/wrapper/gradle-wrapper.jar
+# server/src/main/resources/application.yml
+
+# Node
+node_modules
+npm-debug.log
+yarn-error.log
+
+# IDEs and editors
+.idea/
+.project
+.classpath
+.c9/
+*.launch
+.settings/
+*.sublime-workspace
+
+# Visual Studio Code
+.vscode/
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+.history/
+
+# Compiled output
+client/dist/
+tmp/
+out-tsc/
+bazel-out/
+
+# Miscellaneous
+connect.lock
+coverage
+libpeerconnection.log
+testem.log
+typings/
+
+# System files
+.DS_Store
+Thumbs.db

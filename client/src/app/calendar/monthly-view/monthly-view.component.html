@@ -1,0 +1,38 @@
+<div
+  class="flex justify-content-center align-content-center flex-wrap gap-3 mb-4"
+>
+  <p-button icon="pi pi-chevron-left" [text]="true" (click)="prevMonth()"></p-button>
+  <p>{{ currentMonthName$ | async }}, {{ currentYear$ | async }}</p>
+  <p-button icon="pi pi-chevron-right" [text]="true" (click)="nextMonth()"></p-button>
+</div>
+
+<div class="card">
+  <p-table [value]="[[]]" [tableStyle]="{ 'min-width': '50rem' }">
+    <ng-template pTemplate="header">
+      <tr>
+        <th *ngFor="let weekday of (monthCalendar$ | async)?.weekdaysAbbr">
+          {{ weekday }}
+        </th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body">
+      <tr *ngFor="let week of monthlySchedule">
+        <td
+          *ngFor="let dayObj of week"
+          [class.not-in-month]="!dayObj.isInPrimaryMonth"
+        >
+          <div class="month-cell">
+            <div>{{ dayObj.day }}</div>
+            <div *ngIf="dayObj.isInPrimaryMonth">
+              <div class="assigned-slot" *ngFor="let shift of dayObj.shifts">
+                {{ shift.startTime }} - {{ shift.endTime }} ({{shift.employeeName}}
+                | {{shift.position}})
+              </div>
+            </div>
+          </div>
+
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+</div>

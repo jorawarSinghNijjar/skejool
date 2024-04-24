@@ -7,6 +7,14 @@ services:
             context: ./server
         ports:
             - "9000:80"
+        depends_on:
+            - postgresql
+        env_file: .env
+        environment:
+            - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/$POSTGRESDB_DATABASE
+            - SPRING_DATASOURCE_USERNAME=$POSTGRESDB_USER
+            - SPRING_DATASOURCE_PASSWORD=$POSTGRESDB_ROOT_PASSWORD
+            - SPRING_JPA_HIBERNATE_DDL_AUTO=update
     frontend:
         image: jorawarsingh/skejool-client:1.0
         container_name: client-container
@@ -16,3 +24,13 @@ services:
             - "4200:80"
         depends_on:
             - backend
+    postgresql:
+        image: postgres
+        container_name: db
+        env_file: .env
+        environment:
+            - POSTGRES_USER=$POSTGRESDB_USER
+            - POSTGRES_PASSWORD=$POSTGRESDB_ROOT_PASSWORD
+            - POSTGRES_DB=$POSTGRESDB_DATABASE
+        ports:
+            - "5432:5432"
