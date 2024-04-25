@@ -11,10 +11,10 @@ import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
   imports: [DashboardViewComponent, RouterOutlet],
 
   templateUrl: './app.component.html',
-  styleUrl: './app.component.css'
+  styleUrl: './app.component.css',
 })
 export class AppComponent implements OnInit {
-  message = 'from client in dev mode with workflow';
+  message = 'from client';
 
   constructor(private appService: AppService) { }
 
