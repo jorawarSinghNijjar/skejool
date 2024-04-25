@@ -1,6 +1,5 @@
 package com.ebnite.skejool.services;
 
-import com.ebnite.skejool.dto.ShiftDTO;
 import com.ebnite.skejool.dto.ShiftSlotDTO;
 import com.ebnite.skejool.entity.Employee;
 import com.ebnite.skejool.entity.Shift;
@@ -16,13 +15,11 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 @Service
 public class DailyScheduleService {
 
-    private static final Logger logger = LoggerFactory.getLogger(ScheduleService.class);
+    private static final Logger logger = LoggerFactory.getLogger(WeeklyScheduleService.class);
 
     @Autowired
     private EmployeeService employeeService;

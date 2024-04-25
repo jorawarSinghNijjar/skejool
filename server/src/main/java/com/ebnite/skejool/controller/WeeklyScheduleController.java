@@ -1,9 +1,8 @@
 package com.ebnite.skejool.controller;
 
-import com.ebnite.skejool.entity.Employee;
 import com.ebnite.skejool.model.EmployeeWeeklySchedule;
 import com.ebnite.skejool.services.EmployeeService;
-import com.ebnite.skejool.services.ScheduleService;
+import com.ebnite.skejool.services.WeeklyScheduleService;
 import com.ebnite.skejool.services.ShiftService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,7 +23,7 @@ public class WeeklyScheduleController {
     private static final Logger logger = LoggerFactory.getLogger(DailyScheduleController.class);
 
     @Autowired
-    private ScheduleService scheduleService;
+    private WeeklyScheduleService weeklyScheduleService;
     @Autowired
     private EmployeeService employeeService;
     @Autowired
@@ -34,11 +33,11 @@ public class WeeklyScheduleController {
 
     @GetMapping("/employees")
     public ResponseEntity<List<EmployeeWeeklySchedule>> getEmployeeSchedule(@Param("weekStartDate") LocalDate weekStartDate) {
-        return new ResponseEntity<>(scheduleService.getAllEmployeesWeeklySchedule(weekStartDate), HttpStatus.OK);
+        return new ResponseEntity<>(weeklyScheduleService.getAllEmployeesWeeklySchedule(weekStartDate), HttpStatus.OK);
     }
 
     @GetMapping("/employees/{empId}")
     public ResponseEntity<EmployeeWeeklySchedule> getEmployeeSchedule(@PathVariable int empId, @Param("weekStartDate") LocalDate weekStartDate) {
-        return new ResponseEntity<>(scheduleService.getEmployeeWeeklySchedule(empId, weekStartDate, null), HttpStatus.OK);
+        return new ResponseEntity<>(weeklyScheduleService.getEmployeeWeeklySchedule(empId, weekStartDate, null), HttpStatus.OK);
     }
 }
