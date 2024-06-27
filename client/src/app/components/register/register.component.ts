@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, SimpleChange, SimpleChanges } from '@angular/core';
 import { CardModule } from 'primeng/card';
 import { ButtonModule } from 'primeng/button';
 import {
@@ -54,8 +54,13 @@ export class RegisterComponent implements OnInit {
       }
     );
   }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    console.log(changes);
+  }
   register() {
     const formValue = this.registerForm.value;
+
     this.registerService
       .register(
         formValue.companyName,

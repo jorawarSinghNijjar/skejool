@@ -1,4 +1,4 @@
-<form [formGroup]="loginForm">
+<form [formGroup]="loginForm" (submit)="onSubmit()">
   <p-card header="Login to your account" [style]="{ width: '360px' }">
     <div class="field">
       <label for="email">Email</label>
@@ -45,6 +45,7 @@
       label="Sign In"
       styleClass="w-full my-button-class"
       [disabled]="loginForm.invalid"
+      type="submit"
     ></p-button>
     <div class="mt-2">
       Not a Member?<a href="/register" style="color: rgb(85, 80, 80)">
