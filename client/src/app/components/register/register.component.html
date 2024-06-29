@@ -1,146 +1,148 @@
-<form [formGroup]="registerForm" (submit)="register()">
-  <p-card header="Create Your Company Account" [style]="{ width: '360px' }">
-    <div class="field">
-      <label for="companyName">Company Name</label>
-      <input
-        type="text"
-        pInputText
-        formControlName="companyName"
-        class="w-full"
-        name="companyName"
-        placeholder="Enter Your Company's Name"
-      />
-      <div
-        *ngIf="
-          registerForm.get('companyName')?.invalid &&
-          (registerForm.get('companyName')?.dirty ||
-            registerForm.get('companyName')?.touched)
-        "
-        class="block p-error"
-      >
-        <small
-          *ngIf="registerForm.get('companyName')?.errors?.['required']"
-          class="text-danger"
-          >Company Name is required</small
-        >
-      </div>
-    </div>
-    <div class="field">
-      <label for="email">Email</label>
-      <input
-        type="text"
-        pInputText
-        formControlName="email"
-        class="w-full"
-        name="email"
-        placeholder="john@gmail.com"
-      />
-      <div
-        *ngIf="
-          registerForm.get('email')?.invalid &&
-          (registerForm.get('email')?.dirty ||
-            registerForm.get('email')?.touched)
-        "
-        class="block p-error"
-      >
-        <small
-          *ngIf="registerForm.get('email')?.errors?.['required']"
-          class="text-danger"
-          >Email is required</small
-        >
-        <small
-          *ngIf="registerForm.get('email')?.errors?.['email']"
-          class="text-danger"
-          >Please enter a valid email address</small
-        >
-      </div>
-    </div>
-    <div class="field">
-      <label for="password">Password</label>
-      <input
-        type="password"
-        pInputText
-        formControlName="password"
-        class="w-full"
-        autocomplete="new-password"
-        name="password"
-        placeholder="*******"
-        pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$"
-        title="Password must be at least 8 characters long, and contain at least one uppercase letter, one lowercase letter, one number, and one special character (@$!%*?&)."
-      />
-      <div
-        *ngIf="
-          registerForm.get('password')?.invalid &&
-          (registerForm.get('password')?.dirty ||
-            registerForm.get('password')?.touched)
-        "
-        class="block p-error"
-      >
-        <small
-          *ngIf="registerForm.get('password')?.errors?.['required']"
-          class="text-danger"
-          >Password is required</small
-        >
-        <small
-          *ngIf="registerForm.get('password')?.errors?.['pattern'] && !registerForm.get('password')?.errors?.['required']"
-          class="text-danger"
-          >Password must be at least 8 characters long, and contain at least one
-          uppercase letter, one lowercase letter, one number, and one special
-          character.</small
-        >
-      </div>
-    </div>
-    <div class="field">
-      <label for="confirmPassword">Confirm Your Password</label>
-      <input
-        type="password"
-        pInputText
-        formControlName="confirmPassword"
-        class="w-full"
-        name="confirmPassword"
-        placeholder="*******"
-      />
-      <div
-        *ngIf="
-          registerForm.get('confirmPassword')?.invalid &&
-          (registerForm.get('confirmPassword')?.dirty ||
-            registerForm.get('confirmPassword')?.touched)
-        "
-        class="block p-error"
-      >
-        <small
-          *ngIf="registerForm.get('confirmPassword')?.errors?.['required']"
-          class="text-danger"
-          >Password is required</small
-        >
-
-        <small
+<div class="flex justify-content-center align-items-center h-full">
+  <form [formGroup]="registerForm" (submit)="register()">
+    <p-card header="Create Your Company Account" [style]="{ width: '360px' }">
+      <div class="field">
+        <label for="companyName">Company Name</label>
+        <input
+          type="text"
+          pInputText
+          formControlName="companyName"
+          class="w-full"
+          name="companyName"
+          placeholder="Enter Your Company's Name"
+        />
+        <div
           *ngIf="
-            registerForm?.hasError('passwordMismatch') &&
-            registerForm.get('confirmPassword')?.valid &&
-            registerForm.get('password')?.valid
+            registerForm.get('companyName')?.invalid &&
+            (registerForm.get('companyName')?.dirty ||
+              registerForm.get('companyName')?.touched)
           "
-          class="text-danger"
+          class="block p-error"
         >
-          Password must match
-        </small>
+          <small
+            *ngIf="registerForm.get('companyName')?.errors?.['required']"
+            class="text-danger"
+            >Company Name is required</small
+          >
+        </div>
       </div>
-    </div>
-    <p-button
-      label="Create Account"
-      styleClass="w-full my-button-class"
-      [disabled]="registerForm.invalid"
-      type="submit"
-    ></p-button>
-    <div *ngIf="success" style="color: green">
-      Registration Successful!! Please
-      <a href="/login" style="color: rgb(85, 80, 80)">Login</a>
-    </div>
-    <p
-      *ngIf="errMessage"
-      class="alert alert-danger alert-dismissible fade show"
-    >
-      {{ errMessage }}
-    </p>
-  </p-card>
-</form>
+      <div class="field">
+        <label for="email">Email</label>
+        <input
+          type="text"
+          pInputText
+          formControlName="email"
+          class="w-full"
+          name="email"
+          placeholder="john@gmail.com"
+        />
+        <div
+          *ngIf="
+            registerForm.get('email')?.invalid &&
+            (registerForm.get('email')?.dirty ||
+              registerForm.get('email')?.touched)
+          "
+          class="block p-error"
+        >
+          <small
+            *ngIf="registerForm.get('email')?.errors?.['required']"
+            class="text-danger"
+            >Email is required</small
+          >
+          <small
+            *ngIf="registerForm.get('email')?.errors?.['email']"
+            class="text-danger"
+            >Please enter a valid email address</small
+          >
+        </div>
+      </div>
+      <div class="field">
+        <label for="password">Password</label>
+        <input
+          type="password"
+          pInputText
+          formControlName="password"
+          class="w-full"
+          autocomplete="new-password"
+          name="password"
+          placeholder="*******"
+          pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$"
+          title="Password must be at least 8 characters long, and contain at least one uppercase letter, one lowercase letter, one number, and one special character (@$!%*?&)."
+        />
+        <div
+          *ngIf="
+            registerForm.get('password')?.invalid &&
+            (registerForm.get('password')?.dirty ||
+              registerForm.get('password')?.touched)
+          "
+          class="block p-error"
+        >
+          <small
+            *ngIf="registerForm.get('password')?.errors?.['required']"
+            class="text-danger"
+            >Password is required</small
+          >
+          <small
+            *ngIf="registerForm.get('password')?.errors?.['pattern'] && !registerForm.get('password')?.errors?.['required']"
+            class="text-danger"
+            >Password must be at least 8 characters long, and contain at least
+            one uppercase letter, one lowercase letter, one number, and one
+            special character.</small
+          >
+        </div>
+      </div>
+      <div class="field">
+        <label for="confirmPassword">Confirm Your Password</label>
+        <input
+          type="password"
+          pInputText
+          formControlName="confirmPassword"
+          class="w-full"
+          name="confirmPassword"
+          placeholder="*******"
+        />
+        <div
+          *ngIf="
+            registerForm.get('confirmPassword')?.invalid &&
+            (registerForm.get('confirmPassword')?.dirty ||
+              registerForm.get('confirmPassword')?.touched)
+          "
+          class="block p-error"
+        >
+          <small
+            *ngIf="registerForm.get('confirmPassword')?.errors?.['required']"
+            class="text-danger"
+            >Password is required</small
+          >
+
+          <small
+            *ngIf="
+              registerForm?.hasError('passwordMismatch') &&
+              registerForm.get('confirmPassword')?.valid &&
+              registerForm.get('password')?.valid
+            "
+            class="text-danger"
+          >
+            Password must match
+          </small>
+        </div>
+      </div>
+      <p-button
+        label="Create Account"
+        styleClass="w-full my-button-class"
+        [disabled]="registerForm.invalid"
+        type="submit"
+      ></p-button>
+      <div *ngIf="success" style="color: green">
+        Registration Successful!! Please
+        <a href="/login" style="color: rgb(85, 80, 80)">Login</a>
+      </div>
+      <p
+        *ngIf="errMessage"
+        class="alert alert-danger alert-dismissible fade show"
+      >
+        {{ errMessage }}
+      </p>
+    </p-card>
+  </form>
+</div>
