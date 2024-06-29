@@ -37,6 +37,9 @@ public class MonthlyScheduleService {
                 int recurrenceEndMonth = recurrenceEndDate.getMonthValue();
                 int recurrenceEndYear = recurrenceEndDate.getYear();
 
+                int weeklyStartDay = shift.getStartDayOfShift();
+                int weeklyEndDay = shift.getEndDayOfShift();
+
                 if (
                         year >= recurrenceStartYear && year <= recurrenceEndYear
                 ) {
@@ -46,8 +49,6 @@ public class MonthlyScheduleService {
                             month > recurrenceStartMonth && month < recurrenceEndMonth
                     ) {
                         // complete month is within range
-                        int weeklyStartDay = shift.getStartDayOfShift();
-                        int weeklyEndDay = shift.getEndDayOfShift();
 
                         days.stream().forEach(day -> {
                             if (
@@ -65,7 +66,7 @@ public class MonthlyScheduleService {
                             }
                         });
 
-                    } else if(month == recurrenceEndMonth){
+                    } else if(month == recurrenceStartMonth){
 
                         // partial month is within recurrenceStartMonth
                         days.stream().forEach(day -> {
@@ -73,14 +74,19 @@ public class MonthlyScheduleService {
                                     day.getDate().isAfter(recurrenceStartDate)
                                     || day.getDate().equals(recurrenceStartDate)
                             ){
-                                day.getShifts().add(
-                                        new MonthlyDayShiftDTO(
-                                                day.getDate(),
-                                                shift.getStartTime(),
-                                                shift.getEndTime(),
-                                                new EmployeeDTO(emp.getId(), emp.getName(), emp.getPosition())
-                                        )
-                                );
+
+                                if (
+                                        day.getDayOfWeek() >= weeklyStartDay && day.getDayOfWeek() <= weeklyEndDay
+                                ) {
+                                    day.getShifts().add(
+                                            new MonthlyDayShiftDTO(
+                                                    day.getDate(),
+                                                    shift.getStartTime(),
+                                                    shift.getEndTime(),
+                                                    new EmployeeDTO(emp.getId(), emp.getName(), emp.getPosition())
+                                            )
+                                    );
+                                }
                             }
                         });
                     }
@@ -91,14 +97,19 @@ public class MonthlyScheduleService {
                                     day.getDate().isBefore(recurrenceEndDate)
                                             || day.getDate().equals(recurrenceEndDate)
                             ){
-                                day.getShifts().add(
-                                        new MonthlyDayShiftDTO(
-                                                day.getDate(),
-                                                shift.getStartTime(),
-                                                shift.getEndTime(),
-                                                new EmployeeDTO(emp.getId(), emp.getName(), emp.getPosition())
-                                        )
-                                );
+
+                                if (
+                                        day.getDayOfWeek() >= weeklyStartDay && day.getDayOfWeek() <= weeklyEndDay
+                                ) {
+                                    day.getShifts().add(
+                                            new MonthlyDayShiftDTO(
+                                                    day.getDate(),
+                                                    shift.getStartTime(),
+                                                    shift.getEndTime(),
+                                                    new EmployeeDTO(emp.getId(), emp.getName(), emp.getPosition())
+                                            )
+                                    );
+                                }
                             }
                         });
                     }
