@@ -33,11 +33,11 @@ export const routes: Routes = [
         }
     ]
 },
-{
-    path: '',
-    pathMatch: 'full',
-    redirectTo: 'dashboard',
-},
+// {
+//     path: '',
+//     pathMatch: 'full',
+//     redirectTo: 'dashboard',
+// },
 ];
 @NgModule({
   imports: [RouterModule.forRoot(routes, { enableTracing: false })],
