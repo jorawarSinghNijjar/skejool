@@ -52,7 +52,7 @@ export interface Monthly_Day {
     day: number;
     week: number;
   };
-  shifts?: Monthly_Day_Shift[];
+  shifts?: Monthly_Day_Shift_API_Res[];
 }
 
 export interface Monthly_Schedule {
@@ -67,3 +67,30 @@ export interface Monthly_Schedule {
   lastWeekday: number;
   calendar: Monthly_Day[][];
 }
+
+// Server side types
+
+export interface Monthly_Schedule_API_Res {
+  month: number;
+  year: number;
+  monthName: string | null;
+  days: Monthly_Day_API_Res[];
+}
+
+export interface Monthly_Day_API_Res {
+  date: string;
+  dayOfWeek: number;
+  shifts: Monthly_Day_Shift_API_Res[];
+}
+
+export interface Monthly_Day_Shift_API_Res {
+  date: string;
+  startTime: string;
+  endTime: string;
+  emp: {
+    id: number;
+    name: string;
+    position: string;
+  };
+}
+

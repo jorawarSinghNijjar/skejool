@@ -39,6 +39,7 @@ export class MonthlyViewComponent implements OnInit {
 
   displayCalendar() {
     this.monthCalendar$.subscribe(calendar => {
+      console.log(calendar)
       this.populateSchedule(calendar);
     })
     

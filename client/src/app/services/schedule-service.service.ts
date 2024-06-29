@@ -10,6 +10,7 @@ import {
   Monthly_Day,
   Monthly_Day_Shift,
   Monthly_Schedule,
+  Monthly_Schedule_API_Res,
   Weekly_Daily_Slot,
   Weekly_Schedule,
 } from '../types/schedule';
@@ -229,12 +230,14 @@ export class ScheduleService {
     const weekStartDateStr = moment(weekStartDate).format('YYYY-MM-DD');
 
     // Oringinal Data from backend
-    return this.http
-      .get<Weekly_Schedule>(`${environment.apiUrl}/schedule/weekly/employees/${employee.empId}`, {
+    return this.http.get<Weekly_Schedule>(
+      `${environment.apiUrl}/schedule/weekly/employees/${employee.empId}`,
+      {
         params: {
           weekStartDate: weekStartDateStr,
         },
-      });
+      }
+    );
   }
 
   getAllEmployeesWeeklySchedule(
@@ -243,57 +246,82 @@ export class ScheduleService {
     // Oringinal Data from backend
     const weekStartDateStr = moment(weekStartDate).format('YYYY-MM-DD');
     return this.http
-      .get<Weekly_Schedule[]>(`${environment.apiUrl}/schedule/weekly/employees`, {
-        params: {
-          weekStartDate: weekStartDateStr,
-        },
-      }).pipe(map(res => {
-        return res.map(emp => {
-          let modifiedSchedule =  emp.weeklySchedule.map((day) => {
-
-            return day.map((slot:Weekly_Daily_Slot | null) => {
-            
-              if(!slot?.startTime) {
-                return null;
-              }
-              else{
-                slot = {...slot, notAssigned: true, position: emp.empName}
-              }
+      .get<Weekly_Schedule[]>(
+        `${environment.apiUrl}/schedule/weekly/employees`,
+        {
+          params: {
+            weekStartDate: weekStartDateStr,
+          },
+        }
+      )
+      .pipe(
+        map((res) => {
+          return res.map((emp) => {
+            let modifiedSchedule = emp.weeklySchedule.map((day) => {
+              return day.map((slot: Weekly_Daily_Slot | null) => {
+                if (!slot?.startTime) {
+                  return null;
+                } else {
+                  slot = { ...slot, notAssigned: true, position: emp.empName };
+                }
                 // console.log(slot)
-              return slot;
-            })
-          })
-          emp = {...emp, weeklySchedule: modifiedSchedule}
-          return emp;
+                return slot;
+              });
+            });
+            emp = { ...emp, weeklySchedule: modifiedSchedule };
+            return emp;
+          });
         })
-      }));
+      );
   }
 
   getMonthlySchedule(month: Monthly_Schedule): Observable<Monthly_Day[][]> {
     // Fake data prep for monthly report
-    let emp1Schedule: Monthly_Day_Shift = {
-      startTime: '8:00',
-      endTime: '17:00',
-      position: 'developer',
-      employeeName: 'John Doe',
-    };
+    // let emp1Schedule: Monthly_Day_Shift = {
+    //   startTime: '8:00',
+    //   endTime: '17:00',
+    //   position: 'developer',
+    //   employeeName: 'John Doe',
+    // };
 
-    let emp2Schedule: Monthly_Day_Shift = {
-      startTime: '6:00',
-      endTime: '18:00',
-      position: 'mechanic',
-      employeeName: 'Tripathi',
-    };
+    // let emp2Schedule: Monthly_Day_Shift = {
+    //   startTime: '6:00',
+    //   endTime: '18:00',
+    //   position: 'mechanic',
+    //   employeeName: 'Tripathi',
+    // };
 
-    let schedule = month.calendar.map((week) => {
-      return week.map((day) => {
-        return {
-          ...day,
-          shifts: [emp1Schedule, emp2Schedule],
-        };
-      });
-    });
-    console.log(schedule);
-    return of(schedule);
+    // let schedule = month.calendar.map((week) => {
+    //   return week.map((day) => {
+    //     console.log(day)
+    //     return {
+    //       ...day,
+    //       shifts: [emp1Schedule, emp2Schedule],
+    //     };
+    //   });
+    // });
+    // console.log(schedule);
+
+    return this.http
+      .get<Monthly_Schedule_API_Res>(`${environment.apiUrl}/schedule/monthly`, {
+        params: {
+          month: moment().month(month.month).format('M'),
+          year: month.year,
+        },
+      })
+      .pipe(map((monthlySchedule) => {
+        console.log(monthlySchedule);
+        let schedule = month.calendar.map((week) => {
+          return week.map((day) => {
+            let shifts = monthlySchedule.days[day.day - 1]?.shifts;
+            return {
+              ...day,
+              shifts
+            };
+          });
+        });
+         console.log(schedule)
+        return schedule;
+      }))
   }
 }

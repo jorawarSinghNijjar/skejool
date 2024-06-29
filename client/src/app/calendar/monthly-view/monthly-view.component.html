@@ -24,9 +24,12 @@
           <div class="month-cell">
             <div>{{ dayObj.day }}</div>
             <div *ngIf="dayObj.isInPrimaryMonth">
+              <!-- <div *ngIf="dayObj.shifts && dayObj.shifts.length > 0">
+                Yes
+              </div> -->
               <div class="assigned-slot" *ngFor="let shift of dayObj.shifts">
-                {{ shift.startTime }} - {{ shift.endTime }} ({{shift.employeeName}}
-                | {{shift.position}})
+                {{ shift.startTime }} - {{ shift.endTime }} ({{shift.emp.name}}
+                | {{shift.emp.position}})
               </div>
             </div>
           </div>
